@@ -1,0 +1,6 @@
+{
+  "name": "방주 타고",
+  "description": "성경 발표, 전도, 청취 미션을 수행하여 그린올리브를 모으고 노아의 방주를 다양한 동물들로 채워가는 싸이월드 미니홈피 스타일 힐링 꾸미기 게임",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
