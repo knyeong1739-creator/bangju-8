@@ -80,7 +80,7 @@ export const INITIAL_MISSIONS: Mission[] = [
     id: 'presentation',
     title: '1주제 발표하기',
     rewardOlives: 2,
-    description: '성경 말씀 주제를 정해 요약하고 발표를 완수하여 은혜를 나눕니다.',
+    description: '발표축제 주제 중 하나를 골라 은혜롭게 발표를 합니다.',
     iconName: 'Mic',
     isDailyLimit: false
   },
@@ -88,7 +88,7 @@ export const INITIAL_MISSIONS: Mission[] = [
     id: 'evaluation',
     title: '1주제 평가하기',
     rewardOlives: 5,
-    description: '동료의 발표 내용에 귀 기울이고 핵심 말씀 체계와 전달력을 피드백합니다.',
+    description: '발표축제 주제 중 하나를 골라 평가를 받습니다.',
     iconName: 'CheckSquare',
     isDailyLimit: false
   },
@@ -96,7 +96,7 @@ export const INITIAL_MISSIONS: Mission[] = [
     id: 'listening',
     title: '1주제 청취하기',
     rewardOlives: 1,
-    description: '녹음된 성경 강론 및 주제 발표 음성을 청취하고 묵상합니다.',
+    description: '식구의 발표를 들으며 은혜를 받습니다. (평가자 포함)',
     iconName: 'Headphones',
     isDailyLimit: false
   },
@@ -104,7 +104,7 @@ export const INITIAL_MISSIONS: Mission[] = [
     id: 'evangelism',
     title: '사거리 전도',
     rewardOlives: 2,
-    description: '현장에서 복음을 전하고 나눈 전도 활동을 기록합니다. (1일 1회 제한)',
+    description: '사거리 전도를 진행합니다. (1일 1회 제한)',
     iconName: 'MapPin',
     isDailyLimit: true
   },
@@ -112,7 +112,7 @@ export const INITIAL_MISSIONS: Mission[] = [
     id: 'online_mission',
     title: '온라인 선교',
     rewardOlives: 1,
-    description: '온라인 카드뉴스나 말씀 구절을 이웃에게 전파합니다. (1일 1회 제한)',
+    description: '영상 컨텐츠나 watv 웹사이트 컨텐츠를 하루 30분 이상 시청합니다. (1일 1회 제한)',
     iconName: 'Share2',
     isDailyLimit: true
   }
@@ -128,31 +128,20 @@ export const INITIAL_PROFILE: UserProfile = {
 };
 
 export const INITIAL_STATS = {
-  olives: 20,
-  presentationCount: 1,
-  listeningCount: 2,
+  olives: 0,
+  presentationCount: 0,
+  listeningCount: 0,
 };
 
-export const INITIAL_PURCHASED_ANIMALS = [
-  {
-    id: 'init-dog-1',
-    speciesId: 'dog' as const,
-    customName: '노아 강아지',
-    gender: 'female' as const,
-    purchasedAt: new Date().toISOString(),
-    x: 25,
-    y: 45,
-  },
-  {
-    id: 'init-rabbit-1',
-    speciesId: 'rabbit' as const,
-    customName: '소망 토끼',
-    gender: 'male' as const,
-    purchasedAt: new Date().toISOString(),
-    x: 65,
-    y: 50,
-  },
-];
+export const INITIAL_PURCHASED_ANIMALS: {
+  id: string;
+  speciesId: 'dog' | 'cat' | 'bear' | 'tiger' | 'pig' | 'cow' | 'rabbit' | 'sparrow';
+  customName: string;
+  gender: 'male' | 'female';
+  purchasedAt: string;
+  x: number;
+  y: number;
+}[] = [];
 
 
 export const SAMPLE_PRESENTATIONS: PresentationItem[] = [
