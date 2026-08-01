@@ -226,6 +226,11 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                                 초기비밀번호(1234)
                               </span>
                             )}
+                            {!acc.isApproved && !acc.isAdmin && (
+                              <span className="text-[10px] bg-orange-50 text-orange-700 border border-orange-300 px-1.5 py-0.2 rounded font-mono animate-pulse">
+                                ⏳ 승인 대기
+                              </span>
+                            )}
                             {acc.isAdmin && (
                               <span className="text-[10px] bg-rose-50 text-rose-700 border border-rose-300 px-1.5 py-0.2 rounded font-mono">
                                 관리자
@@ -255,6 +260,22 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                           <Eye className="w-3.5 h-3.5 text-[#0086B3]" />
                           <span>{isSelected ? '닫기' : 'STATUS'}</span>
                         </button>
+
+                        {!acc.isApproved && (
+                          <button
+                            onClick={async () => {
+                              audioManager.playClick();
+                              const updated = { ...acc, isApproved: true };
+                              await saveSingleAccount(updated);
+                              setAccounts((prev) => prev.map((a) => a.username === acc.username ? updated : a));
+                              showNotice(`'${acc.username}' 님을 승인했습니다! 🕊️`);
+                            }}
+                            className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1"
+                          >
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
+                            <span>승인</span>
+                          </button>
+                        )}
 
                         <button
                           onClick={() => handleResetPassword(acc.username)}

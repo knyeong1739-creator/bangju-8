@@ -9,6 +9,7 @@ function rowToAccount(row: any): UserAccount {
     password: row.password,
     isDefaultPassword: row.is_default_password,
     isAdmin: row.is_admin,
+    isApproved: row.is_approved ?? false,
     minihompyTitle: row.minihompy_title,
     createdAt: row.created_at,
     profile: row.profile,
@@ -23,6 +24,7 @@ function accountToRow(acc: UserAccount) {
     password: acc.password,
     is_default_password: acc.isDefaultPassword,
     is_admin: acc.isAdmin,
+    is_approved: acc.isApproved,
     minihompy_title: acc.minihompyTitle,
     created_at: acc.createdAt,
     profile: acc.profile,
@@ -79,6 +81,7 @@ export async function createNewAccount(username: string, minihompyTitle?: string
     password: '1234',
     isDefaultPassword: true,
     isAdmin: username === '관리자',
+    isApproved: false,
     minihompyTitle: minihompyTitle || `${username}의 방주 타고`,
     createdAt: todayStr,
     profile: { ...INITIAL_PROFILE, name: username, avatarUrl: '' },
@@ -91,17 +94,30 @@ export async function createNewAccount(username: string, minihompyTitle?: string
 }
 
 // 로그인 시도 (허용 목록 체크 + 계정 없으면 자동 생성 + 비밀번호 확인)
-export async function attemptLogin(username: string, password: string): Promise<UserAccount | 'not_allowed' | 'wrong_password'> {
-  const allowed = await isAllowedUser(username);
-  if (!allowed) return 'not_allowed';
-
+export async function attemptLogin(username: string, password: string): Promise<UserAccount | 'not_allowed' | 'wrong_password' | 'pending'> {
   let account = await findAccount(username);
+
   if (!account) {
-    account = await createNewAccount(username);
-    if (!account) return 'not_allowed';
+    // 신규 유저 → 계정 생성 + pending 상태로
+    const todayStr = new Date().toISOString().split('T')[0];
+    const newAcc: UserAccount = {
+      username,
+      password,
+      isDefaultPassword: false,
+      isAdmin: false,
+      isApproved: false, // 승인 대기
+      minihompyTitle: `${username}의 방주 타고`,
+      createdAt: todayStr,
+      profile: { ...INITIAL_PROFILE, name: username, avatarUrl: '' },
+      stats: { ...INITIAL_STATS },
+      purchasedAnimals: [...INITIAL_PURCHASED_ANIMALS],
+    };
+    await saveSingleAccount(newAcc);
+    return 'pending';
   }
 
   if (account.password !== password) return 'wrong_password';
+  if (!account.isApproved && !account.isAdmin) return 'pending';
   return account;
 }
 

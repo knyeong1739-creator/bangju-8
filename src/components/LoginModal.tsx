@@ -35,12 +35,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess }) => {
     try {
       const result = await attemptLogin(name, pwd);
 
+      if (result === 'pending') {
+        setErrorMessage('가입 신청이 완료됐어요! 관리자 승인 후 로그인할 수 있어요. 🕊️');
+        return;
+      }
       if (result === 'not_allowed') {
-        setErrorMessage('관리자가 등록한 사용자만 로그인할 수 있어요. 관리자에게 문의해주세요.');
+        setErrorMessage('관리자가 등록한 사용자만 로그인할 수 있어요.');
         return;
       }
       if (result === 'wrong_password') {
-        setErrorMessage('비밀번호가 올바르지 않습니다. (초기 비밀번호: 1234)');
+        setErrorMessage('비밀번호가 올바르지 않습니다.');
         return;
       }
 
@@ -85,7 +89,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess }) => {
           </p>
           <ul className="list-disc list-inside text-[11px] text-slate-600 space-y-0.5 pl-1">
             <li>초기 비밀번호: <strong className="text-[#0086B3] font-mono">1234</strong> (로그인 후 변경 가능)</li>
-            <li>관리자가 등록해준 이름만 로그인이 가능해요.</li>
+            <li>처음 로그인 시 관리자 승인 후 이용 가능해요.</li>
           </ul>
         </div>
 

@@ -80,7 +80,8 @@ export interface UserAccount {
   username: string;
   password: string;
   isDefaultPassword: boolean;
-  isAdmin?: boolean;
+  isAdmin: boolean;
+  isApproved: boolean;
   minihompyTitle: string;
   createdAt: string;
   profile: UserProfile;
