@@ -103,7 +103,7 @@ export async function attemptLogin(username: string, password: string): Promise<
     const newAcc: UserAccount = {
       username,
       password,
-      isDefaultPassword: false,
+      isDefaultPassword: true,
       isAdmin: false,
       isApproved: false, // 승인 대기
       minihompyTitle: `${username}의 방주 타고`,
