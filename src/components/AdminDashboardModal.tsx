@@ -56,6 +56,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
     refreshAllowedUsers();
   }, []);
 
+  const pendingAccounts = accounts.filter((a) => !a.isApproved && !a.isAdmin);
   const filteredAccounts = accounts.filter(
     (a) => a.username.includes(searchTerm) || a.minihompyTitle.includes(searchTerm)
   );
@@ -193,6 +194,44 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
             </div>
 
             <div className="mt-3 flex-1 overflow-y-auto space-y-2 pr-1">
+              {pendingAccounts.length > 0 && (
+                <div className="bg-orange-50 border-2 border-orange-300 rounded-xl p-3 space-y-2">
+                  <h4 className="text-xs font-bold text-orange-700 flex items-center gap-1.5">
+                    <span>⏳ 승인 대기 중 ({pendingAccounts.length}명)</span>
+                  </h4>
+                  {pendingAccounts.map((acc) => (
+                    <div key={acc.username} className="bg-white border border-orange-200 rounded-lg px-3 py-2 flex items-center justify-between gap-2">
+                      <div>
+                        <span className="font-bold text-sm text-slate-800">{acc.username}</span>
+                        <span className="text-[11px] text-slate-500 ml-2">가입 신청함</span>
+                      </div>
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={async () => {
+                            audioManager.playClick();
+                            const updated = { ...acc, isApproved: true };
+                            await saveSingleAccount(updated);
+                            setAccounts((prev) => prev.map((a) => a.username === acc.username ? updated : a));
+                            showNotice(`'${acc.username}' 님을 승인했습니다! 🕊️`);
+                          }}
+                          className="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1"
+                        >
+                          <CheckCircle className="w-3.5 h-3.5" />
+                          <span>승인</span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteAccount(acc.username)}
+                          className="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>거절</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {isLoadingAccounts ? (
                 <div className="p-8 text-center text-xs text-slate-500">불러오는 중...</div>
               ) : filteredAccounts.length === 0 ? (
