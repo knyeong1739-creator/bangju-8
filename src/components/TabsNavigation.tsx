@@ -1,8 +1,8 @@
 import React from 'react';
-import { Home, CheckCircle2, ShoppingBag } from 'lucide-react';
+import { Home, CheckCircle2, ShoppingBag, Trophy } from 'lucide-react';
 import { audioManager } from '../lib/audio';
 
-export type TabType = 'home' | 'missions' | 'shop';
+export type TabType = 'home' | 'missions' | 'shop' | 'ranking';
 
 interface TabsNavigationProps {
   activeTab: TabType;
@@ -14,6 +14,7 @@ export const TabsNavigation: React.FC<TabsNavigationProps> = ({ activeTab, onTab
     { id: 'home' as TabType, label: '홈', icon: Home },
     { id: 'missions' as TabType, label: '미션', icon: CheckCircle2 },
     { id: 'shop' as TabType, label: '넓은 들판(상점)', icon: ShoppingBag },
+    { id: 'ranking' as TabType, label: '랭킹', icon: Trophy },
   ];
 
   const handleSelect = (tabId: TabType) => {

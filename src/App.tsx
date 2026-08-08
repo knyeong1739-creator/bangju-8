@@ -27,6 +27,7 @@ import { AnimalDetailModal } from './components/AnimalDetailModal';
 import { LoginModal } from './components/LoginModal';
 import { ChangePasswordModal } from './components/ChangePasswordModal';
 import { AdminDashboardModal } from './components/AdminDashboardModal';
+import { RankingView } from './components/RankingView';
 import { audioManager } from './lib/audio';
 
 export default function App() {
@@ -271,6 +272,10 @@ export default function App() {
                     onGoToMissions={() => setActiveTab('missions')}
                     onGoToHome={() => setActiveTab('home')}
                   />
+                )}
+
+                {activeTab === 'ranking' && (
+                  <RankingView />
                 )}
               </div>
             </div>
